@@ -9,22 +9,22 @@
     <section>
         <div class="form-box">
             <div class="form-value">
-                
+                <form method="POST" action="/loginView">
                     <h2>Login</h2>
                     <div class="inputbox">
-                        <input id="email" type="email" required>
-                        <label for="">Email</label>
+                        <input name="email" required>
+                        <label for="">Name</label>
                     </div>
                     <div class="inputbox">
-                        <input id="password" type="password" required>
+                        <input name="password" type="password" required>
                         <label for="">Password</label>
                     </div>
                     
-                    <button id="login">Log in</button>
+                    <button name="login">Log in</button>
                     <div class="register">
                         <p>Don't have an account <a href="/signupView">Register</a></p>
                     </div>
-                
+                </form>
             </div>
         </div>
     </section>
