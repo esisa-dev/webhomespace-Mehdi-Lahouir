@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../static/script.js"></script>
+    <link rel="stylesheet" href="../static/Home.css">
+    <style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			text-align: left;
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+		}
+		th {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #f5f5f5;
+		}
+	</style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 23px;">Welcome to Your Home Space</h1>
+    <a href="/logout">
+        <button>logout</button>
+    </a>
+    <a href="/download">
+        <button>Download</button>
+    </a>
+    <div style="text-align: center;">
+		<a href="/files"> <button style="background-color: rgb(212, 154, 164);">files</button></a>
+		<a href="/dir"><button>dir</button></a>
+		<a href="/space"><button style="background-color: rgb(212, 154, 164);" onclick="showSize()">Space (Size: <span id="size"></span>)</button></a>
+    
+	</div>
+    <div class="Search">
+        <input type="search" placeholder="type to search">
+    </div>
+    <h1>File List</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Filename</th>
+				<th>Type</th>
+				<th>Size</th>
+				<th>Last Modified</th>
+			</tr>
+		</thead>
+		<tbody id="file-list">
+		</tbody>
+	</table>
+	<script>
+		function getFiles() {
+			fetch('/files')
+				.then(response => response.json())
+				.then(data => {
+					let fileList = document.getElementById('file-list');
+					for (let file of data) {
+						let row = fileList.insertRow(-1);
+						let nameCell = row.insertCell(0);
+						nameCell.innerHTML = file.name;
+						let typeCell = row.insertCell(1);
+						typeCell.innerHTML = file.type;
+						let sizeCell = row.insertCell(2);
+						sizeCell.innerHTML = file.size;
+						let modifiedCell = row.insertCell(3);
+						modifiedCell.innerHTML = file.modified;
+					}
+				});
+		}
+            function formatSize(bytes) {
+                const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+                let size = bytes;
+                let unitIndex = 0;
+                while (size >= 1024 && unitIndex < units.length - 1) {
+                    size /= 1024;
+                    unitIndex++;
+                }
+                return size.toFixed(2) + ' ' + units[unitIndex];
+            }
+
+            function showSize() {
+                fetch('/files')
+                    .then(response => response.json())
+                    .then(data => {
+                        let size = data.size;
+                        alert('Total size of files: ' + formatSize(size));
+                    });
+        }
+		getFiles();
+	</script>
+
+    </body>
+</html>
